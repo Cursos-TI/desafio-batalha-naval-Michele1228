@@ -1,103 +1,82 @@
-# ⚠️ Importante!!!
-Você pode escolher qualquer um dos desafios para desenvolver. Sinta-se à vontade para começar pelo desafio que mais lhe interessa.
+#include <stdio.h>
 
-# Desafio Batalha Naval - Três Níveis de Complexidade
+#define TAMANHO_TABULEIRO 10
+#define TAMANHO_NAVIO 3
 
-Bem-vindo ao desafio "Batalha Naval"! Este projeto desafiará suas habilidades de programação utilizando vetores e matrizes para simular um jogo de Batalha Naval, dividido em três níveis: Novato, Aventureiro e Mestre. Em cada nível, novas funcionalidades serão adicionadas, tornando o desafio progressivamente mais complexo.
+int main() {
+    // ----------------------------
+    // Inicio do tabuleiro
+    // ----------------------------
+    int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO];
 
-## 🏅 Nível Novato
+    // Preenche o tabuleiro com 0 (água)
+    for (int linha = 0; linha < TAMANHO_TABULEIRO; linha++) {
+        for (int coluna = 0; coluna < TAMANHO_TABULEIRO; coluna++) {
+            tabuleiro[linha][coluna] = 0;
+        }
+    }
 
-Neste nível inicial, você implementará a lógica básica de posicionamento de navios em um tabuleiro de Batalha Naval utilizando vetores bidimensionais.
+    // ----------------------------
+    // Códigos das coordenadas dos navios 
+    // ----------------------------
+    int navioHorizontal[TAMANHO_NAVIO] = {3, 3, 3}; // navio horizontal
+    int navioVertical[TAMANHO_NAVIO] = {3, 3, 3};   // navio vertical
 
-### 🚩 Objetivos:
-- **Posicionamento dos Navios:** O sistema deve simular a localização de dois navios no tabuleiro, um posicionado verticalmente e outro horizontalmente.
-- **Utilização de Vetores:** Os navios serão posicionados utilizando vetores bidimensionais, com coordenadas X e Y.
-- **Exibição de Coordenadas:** O sistema deve exibir as coordenadas de cada parte dos navios no console utilizando `printf`.
+    int linhaH = 2;   // linha inicial do navio horizontal
+    int colunaH = 4;  // coluna inicial do navio horizontal
 
-### 📥 Entrada de Dados:
-- Os valores serão inseridos manualmente por meio de variáveis no código.
+    int linhaV = 5;   // linha inicial do navio vertical
+    int colunaV = 1;  // coluna inicial do navio vertical
 
-### 📤 Saída de Dados:
-- Após o posicionamento, o sistema deve exibir as coordenadas dos navios de forma clara e organizada.
+    // ----------------------------
+    // Validação: dentro dos limites do tabuleiro
+    // ----------------------------
+    if (colunaH + TAMANHO_NAVIO > TAMANHO_TABULEIRO || linhaV + TAMANHO_NAVIO > TAMANHO_TABULEIRO) {
+        printf("Erro: Navios fora dos limites do tabuleiro.\n");
+        return 1;
+    }
 
----
+    // ----------------------------
+    // Validação: sobreposição
+    // ----------------------------
+    int sobreposicao = 0;
+    for (int i = 0; i < TAMANHO_NAVIO; i++) {
+        if (linhaH == linhaV + i && colunaH + i == colunaV) {
+            sobreposicao = 1;
+            break;
+        }
+    }
 
-## 🏅 Nível Aventureiro
+    if (sobreposicao) {
+        printf("Erro: Navios se sobrepõem.\n");
+        return 1;
+    }
 
-No nível Aventureiro, você expandirá o tabuleiro e adicionará mais navios, incluindo posicionamentos na diagonal.
+    // ----------------------------
+    // Navio em posição horizontal
+    // ----------------------------
+    for (int i = 0; i < TAMANHO_NAVIO; i++) {
+        tabuleiro[linhaH][colunaH + i] = navioHorizontal[i];
+    }
 
-### 🆕 Diferença em relação ao Nível Novato:
-- **Tabuleiro 10x10:** O tabuleiro será expandido para uma matriz 10x10.
-- **Posicionamento de Quatro Navios:** O sistema deverá posicionar quatro navios, incluindo dois na diagonal.
-- **Exibição Completa do Tabuleiro:** O sistema exibirá toda a matriz, onde 0 indica uma posição sem navio e 3 indica uma posição ocupada.
+    // ----------------------------
+    // Navio em posição vertical
+    // ----------------------------
+    for (int i = 0; i < TAMANHO_NAVIO; i++) {
+        tabuleiro[linhaV + i][colunaV] = navioVertical[i];
+    }
 
-### 🚩 Novas Funcionalidades:
-- **Matriz 10x10:** Implementação de uma matriz maior para representar o tabuleiro.
-- **Posicionamento de Navios na Diagonal:** Adição de navios posicionados diagonalmente.
-- **Exibição do Tabuleiro Completo:** O sistema mostrará o tabuleiro completo, indicando as posições ocupadas e livres.
+    // ----------------------------
+    // Exibição do tabuleiro
+    // ----------------------------
+    printf("\nTabuleiro de Batalha Naval (0 = água, 3 = navio):\n\n");
 
----
+    for (int linha = 0; linha < TAMANHO_TABULEIRO; linha++) {
+        for (int coluna = 0; coluna < TAMANHO_TABULEIRO; coluna++) {
+            printf("%d ", tabuleiro[linha][coluna]);
+        }
+        printf("\n");
+    }
 
-## 🏅 Nível Mestre
-
-No nível Mestre, o desafio se intensifica com a implementação de habilidades especiais representadas por matrizes específicas no tabuleiro.
-
-### 🆕 Diferença em relação ao Nível Aventureiro:
-- **Habilidades Especiais:** O sistema deve definir áreas de habilidades utilizando matrizes com padrões específicos: cone, cruz e octaedro.
-- **Estruturas de Repetição Aninhadas:** Utilização de loops aninhados para percorrer e preencher as áreas afetadas pelas habilidades.
-
-### 🚩 Novas Funcionalidades:
-- **Matrizes de Habilidades:** Implementação de três matrizes para representar habilidades especiais no tabuleiro.
-- **Padrões de Habilidade:** Criação de padrões específicos (cone, cruz, octaedro) para definir as áreas afetadas.
-- **Exibição das Áreas Atingidas:** O sistema exibirá o tabuleiro com as áreas afetadas, utilizando 0 para áreas não afetadas e 1 para áreas afetadas.
-
-### Exemplo de Saída:
-
-Exemplo e comando:
-printf("%d ",matriz[i][j]);
-
-### Exemplo de saída de habilidade em cone:
-
-0 0 1 0 0
-
-0 1 1 1 0
-
-1 1 1 1 1
-
-### Exemplo de saída de habilidade em octaedro:
-
-0 0 1 0 0
-
-0 1 1 1 0
-
-0 0 1 0 0
-
-### Exemplo de saída de habilidade em cruz:
-
-0 0 1 0 0
-
-1 1 1 1 1
-
-0 0 1 0 0
-
-
-
-
-
----
-
-## 📋 Requisitos Funcionais Comuns
-- **Entrada de Dados:** Os valores serão inseridos manualmente por meio de variáveis no código.
-- **Utilização de Matrizes:** Os dados devem ser estruturados de maneira eficiente utilizando matrizes.
-- **Exibição de Resultados:** Os resultados devem ser exibidos de forma clara e organizada.
-
-## 📌 Requisitos Não Funcionais Comuns
-- **Performance:** O sistema deve executar operações de forma eficiente, sem atrasos perceptíveis.
-- **Documentação:** O código deve ser bem documentado, com comentários claros sobre a função de cada parte do código.
-- **Manutenibilidade:** O código deve ser organizado e fácil de entender, facilitando futuras manutenções e expansões.
-
----
-
-Boa sorte no desenvolvimento deste desafio! Aproveite para aprimorar suas habilidades em vetores e matrizes enquanto progride pelos níveis.
-
-Equipe de Ensino - MateCheck
+    return 0;
+}

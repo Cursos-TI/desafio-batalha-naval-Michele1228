@@ -1,40 +1,82 @@
 #include <stdio.h>
 
-// Desafio Batalha Naval - MateCheck
-// Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
-// Siga os comentários para implementar cada parte do desafio.
+#define TAMANHO_TABULEIRO 10
+#define TAMANHO_NAVIO 3
 
 int main() {
-    // Nível Novato - Posicionamento dos Navios
-    // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
-    // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
-    // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
 
-    // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
-    // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
-    // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
-    // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
+    // Inicio do tabuleiro
 
-    // Nível Mestre - Habilidades Especiais com Matrizes
-    // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
-    // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
-    // Sugestão: Exiba o tabuleiro com as áreas afetadas, utilizando 0 para áreas não afetadas e 1 para áreas atingidas.
+    int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO];
 
-    // Exemplos de exibição das habilidades:
-    // Exemplo para habilidade em cone:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 1 1 1 1 1
+    // Preenche o tabuleiro com 0 (água)
+    for (int linha = 0; linha < TAMANHO_TABULEIRO; linha++) {
+        for (int coluna = 0; coluna < TAMANHO_TABULEIRO; coluna++) {
+            tabuleiro[linha][coluna] = 0;
+        }
+    }
+
+
+    // Códigos das coordenadas dos navios 
+ 
+    int navioHorizontal[TAMANHO_NAVIO] = {3, 3, 3}; // navio horizontal
+    int navioVertical[TAMANHO_NAVIO] = {3, 3, 3};   // navio vertical
+
+    int linhaH = 2;   // linha inicial do navio horizontal
+    int colunaH = 4;  // coluna inicial do navio horizontal
+
+    int linhaV = 5;   // linha inicial do navio vertical
+    int colunaV = 1;  // coluna inicial do navio vertical
+
     
-    // Exemplo para habilidade em octaedro:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 0 0 1 0 0
+    // Validação: dentro dos limites do tabuleiro
 
-    // Exemplo para habilidade em cruz:
-    // 0 0 1 0 0
-    // 1 1 1 1 1
-    // 0 0 1 0 0
+    if (colunaH + TAMANHO_NAVIO > TAMANHO_TABULEIRO || linhaV + TAMANHO_NAVIO > TAMANHO_TABULEIRO) {
+        printf("Erro: Navios fora dos limites do tabuleiro.\n");
+        return 1;
+    }
+
+   
+    // Validação: sobreposição
+
+    int sobreposicao = 0;
+    for (int i = 0; i < TAMANHO_NAVIO; i++) {
+        if (linhaH == linhaV + i && colunaH + i == colunaV) {
+            sobreposicao = 1;
+            break;
+        }
+    }
+
+    if (sobreposicao) {
+        printf("Erro: Navios se sobrepõem.\n");
+        return 1;
+    }
+
+
+    // Navio em posição horizontal
+ 
+    for (int i = 0; i < TAMANHO_NAVIO; i++) {
+        tabuleiro[linhaH][colunaH + i] = navioHorizontal[i];
+    }
+
+
+    // Navio em posição vertical
+   
+    for (int i = 0; i < TAMANHO_NAVIO; i++) {
+        tabuleiro[linhaV + i][colunaV] = navioVertical[i];
+    }
+
+   
+    // Exibição do tabuleiro
+ 
+    printf("\nTabuleiro de Batalha Naval (0 = água, 3 = navio):\n\n");
+
+    for (int linha = 0; linha < TAMANHO_TABULEIRO; linha++) {
+        for (int coluna = 0; coluna < TAMANHO_TABULEIRO; coluna++) {
+            printf("%d ", tabuleiro[linha][coluna]);
+        }
+        printf("\n");
+    }
 
     return 0;
 }
